@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import reducer from './reducers'
 import { handleReceiveDecks } from './actions/shared'
 import middleware from './middleware'
-import Tabs from './components/Tabs'
+import TabNav from './components/Tabs'
 import 'react-native-gesture-handler';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
@@ -28,7 +28,10 @@ function CustomStatusBar ({backgroundColor, ...props}) {
 
 const MainNavigator = createAppContainer(createStackNavigator({
   Home: {
-    screen: Tabs,
+    screen: TabNav,
+    navigationOptions: {
+      header: null
+    }
   },
   Deck: {
     screen: Deck,
