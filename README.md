@@ -26,24 +26,26 @@ Decks:
   "deck-id-1": {
     "id": "deck-id-1",
     "title": "...",
-	"flashcards": {
-	  "card-id-1": {
+    "flashcards": {
+        "card-id-1": {
 	    "id": "card-id-1",
-		"question": "...",
-		"answer": "..."
-	  }
-	}
+	    "question": "...",
+	    "answer": "..."
+         },
+	 ...
+     }
   },
   "deck-id-2": {
     "id": "deck-id-2",
     "title": "...",
-	"flashcards": {
-	  "card-id-1": {
+    "flashcards": {
+        "card-id-1": {
 	    "id": "card-id-1",
-		"question": "...",
-		"answer": "..."
-	  }
-	}
+	    "question": "...",
+	    "answer": "..."
+         },
+	 ...
+     }
   },
   ...
 }
