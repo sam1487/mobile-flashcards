@@ -1,126 +1,10 @@
-
-let users = {
-  sarahedo: {
-    id: 'sarahedo',
-    name: 'Sarah Edo',
-    avatarURL: 'https://cdn4.iconfinder.com/data/icons/avatars-62/64/teenage-avatar-man-boy-512.png',
-    answers: {
-      "8xf0y6ziyjabvozdd253nd": 'optionOne',
-      "6ni6ok3ym7mf1p33lnez": 'optionTwo',
-      "am8ehyc8byjqgar0jgpub9": 'optionTwo',
-      "loxhs1bqm25b708cmbf3g": 'optionTwo'
-    },
-    questions: ['8xf0y6ziyjabvozdd253nd', 'am8ehyc8byjqgar0jgpub9']
-  },
-  tylermcginnis: {
-    id: 'tylermcginnis',
-    name: 'Tyler McGinnis',
-    avatarURL: 'https://cdn3.iconfinder.com/data/icons/avatars-colorful-1/100/avatar6_c-512.png',
-    answers: {
-      "vthrdm985a262al8qx3do": 'optionOne',
-      "xj352vofupe1dqz9emx13r": 'optionTwo',
-    },
-    questions: ['loxhs1bqm25b708cmbf3g', 'vthrdm985a262al8qx3do'],
-  },
-  johndoe: {
-    id: 'johndoe',
-    name: 'John Doe',
-    avatarURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSncpeoUrsMgj7Yqd6oY8okNH8Lj3B1rlR10_YTAuW5zDOcHI9v&usqp=CAU',
-    answers: {
-      "xj352vofupe1dqz9emx13r": 'optionOne',
-      "vthrdm985a262al8qx3do": 'optionTwo',
-      "6ni6ok3ym7mf1p33lnez": 'optionTwo'
-    },
-    questions: ['6ni6ok3ym7mf1p33lnez', 'xj352vofupe1dqz9emx13r'],
-  }
-}
-
-let questions = {
-  "8xf0y6ziyjabvozdd253nd": {
-    id: '8xf0y6ziyjabvozdd253nd',
-    author: 'sarahedo',
-    timestamp: 1467166872634,
-    optionOne: {
-      votes: ['sarahedo'],
-      text: 'have horrible short term memory',
-    },
-    optionTwo: {
-      votes: [],
-      text: 'have horrible long term memory'
-    }
-  },
-  "6ni6ok3ym7mf1p33lnez": {
-    id: '6ni6ok3ym7mf1p33lnez',
-    author: 'johndoe',
-    timestamp: 1468479767190,
-    optionOne: {
-      votes: [],
-      text: 'become a superhero',
-    },
-    optionTwo: {
-      votes: ['johndoe', 'sarahedo'],
-      text: 'become a supervillain'
-    }
-  },
-  "am8ehyc8byjqgar0jgpub9": {
-    id: 'am8ehyc8byjqgar0jgpub9',
-    author: 'sarahedo',
-    timestamp: 1488579767190,
-    optionOne: {
-      votes: [],
-      text: 'be telekinetic',
-    },
-    optionTwo: {
-      votes: ['sarahedo'],
-      text: 'be telepathic'
-    }
-  },
-  "loxhs1bqm25b708cmbf3g": {
-    id: 'loxhs1bqm25b708cmbf3g',
-    author: 'tylermcginnis',
-    timestamp: 1482579767190,
-    optionOne: {
-      votes: [],
-      text: 'be a front-end developer',
-    },
-    optionTwo: {
-      votes: ['sarahedo'],
-      text: 'be a back-end developer'
-    }
-  },
-  "vthrdm985a262al8qx3do": {
-    id: 'vthrdm985a262al8qx3do',
-    author: 'tylermcginnis',
-    timestamp: 1489579767190,
-    optionOne: {
-      votes: ['tylermcginnis'],
-      text: 'find $50 yourself',
-    },
-    optionTwo: {
-      votes: ['johndoe'],
-      text: 'have your best friend find $500'
-    }
-  },
-  "xj352vofupe1dqz9emx13r": {
-    id: 'xj352vofupe1dqz9emx13r',
-    author: 'johndoe',
-    timestamp: 1493579767190,
-    optionOne: {
-      votes: ['johndoe'],
-      text: 'write JavaScript',
-    },
-    optionTwo: {
-      votes: ['tylermcginnis'],
-      text: 'write Swift'
-    }
-  },
-}
+import AsyncStorage from '@react-native-community/async-storage';
 
 function generateUID() {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 }
 
-let decks = {
+let localDecks = {
   "8xf0y6ziyjabvozdd253nd": {
     id: '8xf0y6ziyjabvozdd253nd',
     title: 'Capital Cities',
@@ -165,13 +49,9 @@ let decks = {
   },
 }
 
-export function _getDecks() {
-  return new Promise((res, rej) => {
-    setTimeout(() => res({ ...decks }), 1000)
-  })
-}
+const storageKey = '@mobile-flashcards:data'
 
-function formatCard({ question, answer }) {
+function formatCard(question, answer) {
   return {
     id: generateUID(),
     question: question,
@@ -179,67 +59,69 @@ function formatCard({ question, answer }) {
   }
 }
 
-export function _saveCard(deckId, {question, answer}) {
-  return new Promise((res, rej) => {
-    const formattedCard = formatCard({question, answer});
-
-    setTimeout(() => {
-      decks[deckId].flashcards[formattedCard.id] = formattedCard;
-      res({deckId: deckId, card: formattedCard});
-    }, 1000)
-  })
+function formatDeck(title) {
+  return {
+    id: generateUID(),
+    title: title,
+    flashcards: {}
+  }
 }
 
-export function _saveQuestion(question) {
-  return new Promise((res, rej) => {
-    const authedUser = question.author;
-    const formattedQuestion = formatQuestion(question);
-
-    setTimeout(() => {
-      questions = {
-        ...questions,
-        [formattedQuestion.id]: formattedQuestion
-      }
-
-      users = {
-        ...users,
-        [authedUser]: {
-          ...users[authedUser],
-          questions: users[authedUser].questions.concat([formattedQuestion.id])
-        }
-      }
-
-      res(formattedQuestion)
-    }, 1000)
-  })
+async function getDecksFromStorage() {
+  const decks = await AsyncStorage.getItem(storageKey);
+  if (!decks) {
+    return {};
+  }
+  return JSON.parse(decks);
 }
 
-export function _saveQuestionAnswer({ authedUser, qid, answer }) {
-  return new Promise((res, rej) => {
-    setTimeout(() => {
-      users = {
-        ...users,
-        [authedUser]: {
-          ...users[authedUser],
-          answers: {
-            ...users[authedUser].answers,
-            [qid]: answer
-          }
-        }
-      }
+export async function _getDecks() {
+  const decks = await getDecksFromStorage();
+  if (Object.keys(decks).length === 0) {
+    // console.log('No data found in storage, loading with default data')
+    // return localDecks;
+    return {}
+  }
+  return decks;
 
-      questions = {
-        ...questions,
-        [qid]: {
-          ...questions[qid],
-          [answer]: {
-            ...questions[qid][answer],
-            votes: questions[qid][answer].votes.concat([authedUser])
-          }
-        }
-      }
-
-      res()
-    }, 500)
-  })
+  // return new Promise((res, rej) => {
+  //   setTimeout(() => res({ ...decks }), 1000)
+  // })
 }
+
+async function _saveDecks(decks) {
+  await AsyncStorage.setItem(storageKey, JSON.stringify(decks));
+}
+
+export async function _addDeck(title) {
+  const formattedDeck = formatDeck(title)
+  const decks = await getDecksFromStorage();
+  decks[formattedDeck.id] = formattedDeck;
+  await _saveDecks(decks);
+  console.log('Returning formatted deck: ', formattedDeck)
+  return formattedDeck;
+}
+
+export async function _deleteDeck(deckId) {
+  const decks = await getDecksFromStorage();
+  delete decks[deckId];
+  await _saveDecks(decks);
+}
+
+
+export async function _addFlashcard(deckId, question, answer) {
+    const formattedCard = formatCard(question, answer);
+    const decks = await getDecksFromStorage();
+    decks[deckId].flashcards[formattedCard.id] = formattedCard;
+    await _saveDecks(decks);
+    return formattedCard;
+  // return new Promise((res, rej) => {
+  //   const formattedCard = formatCard({question, answer});
+
+  //   setTimeout(() => {
+  //     decks[deckId].flashcards[formattedCard.id] = formattedCard;
+  //     res({deckId: deckId, card: formattedCard});
+  //   }, 1000)
+  // })
+}
+

@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native'
 import { connect } from 'react-redux'
-import { addFlashcard,  } from '../actions/decks'
+import { handleAddFlashcard } from '../actions/decks'
 
 class AddCard extends React.Component {
     state = {
@@ -18,9 +18,8 @@ class AddCard extends React.Component {
             alert('Both the Question and Answer must be specified');
             return;
         }
-        this.props.dispatch(addFlashcard(deck.id, question, answer));
+        this.props.dispatch(handleAddFlashcard(deck.id, question, answer));
         this.props.navigation.goBack();
-
     }
 
 

@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import { addFlashcard, } from '../actions/decks'
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
 
 class Quiz extends React.Component {
   state = {
@@ -38,12 +39,27 @@ class Quiz extends React.Component {
     }));
   }
 
+  handleRestartQuiz = () => {
+    this.setState({
+      nextIndex: 0,
+      correct: 0,
+      incorrect: 0,
+      showAnswer: false,
+    })
+  }
+
   handleBackToDeck = () => {
     this.props.navigation.goBack();
   }
 
+  updateNotificationSchedule = () => {
+    console.log('Updating notifications')
+    clearLocalNotification().then(setLocalNotification);
+  }
+
   renderCompleted = () => {
     const { deck } = this.props.navigation.state.params;
+    this.updateNotificationSchedule();
     return (
       <View style={{flex: 1}}>
         <View style={{ flex: 1, paddingVertical: 20, paddingHorizontal: 10, justifyContent: 'center'}}>
@@ -62,14 +78,22 @@ class Quiz extends React.Component {
               <Text style={{ marginVertical: 10, marginLeft: 30, fontSize: 24, color: 'whitesmoke', fontWeight: 'bold'}}>{this.computeAccuracy().toFixed(1)}%</Text>
             </View>
           </View>
+          <View style={{marginTop: 20, marginHorizontal: 40}}>
+            <TouchableOpacity onPress={this.handleRestartQuiz}>
+              <View style={{ minWidth: '50%', marginVertical: 10, backgroundColor: 'maroon', borderRadius: 5, padding: 10 }}>
+                <Text style={{ color: 'white', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}>Restart Quiz</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
         </View>
-        <View style={{marginBottom: 50, paddingHorizontal: 50}}>
+        <View style={{marginBottom: 50, marginHorizontal: 50}}>
           <TouchableOpacity onPress={this.handleBackToDeck}>
             <View style={{ minWidth: '50%', marginVertical: 10, backgroundColor: 'darkgreen', borderRadius: 5, padding: 10 }}>
               <Text style={{ color: 'white', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}>Back to Deck</Text>
             </View>
           </TouchableOpacity>
-          </View>
+        </View>
       </View>
     );
   }
@@ -82,12 +106,21 @@ class Quiz extends React.Component {
     return (
       <View style={{flex: 1}}>
         <View style={{ flex: 1, paddingVertical: 20, paddingHorizontal: 10, justifyContent: 'flex-start' }}>
-          <Text style={{ marginTop: 10, textAlign: 'center', fontSize: 20, color: 'darkgray' }}>{this.state.nextIndex+1} of {flashcardIds.length}</Text>
-          <Text style={{ marginTop: 20, textAlign: 'center', fontSize: 30 }}>{flashcard.question}</Text>
-          <Text style={{ marginTop: 20, textAlign: 'center', fontSize: 20, color: 'darkslategray' }}>{this.state.showAnswer ? flashcard.answer : ' '}</Text>
-          <TouchableOpacity onPress={() => this.setState({showAnswer: true})}>
+          <Text style={{ marginVertical: 20, textAlign: 'center', fontSize: 20, color: 'darkslategray' }}>{this.state.nextIndex+1} of {flashcardIds.length}</Text>
+          {this.state.showAnswer 
+            ? <View>
+                <Text style={{ marginTop: 20, textAlign: 'center', fontSize: 12 }}>Question</Text>
+                <Text style={{ marginTop: 20, textAlign: 'center', fontSize: 26, color: 'darkslategray' }}>{this.state.showAnswer ? flashcard.answer : ' '}</Text>
+              </View>
+            : <View>
+                <Text style={{ marginTop: 20, textAlign: 'center', fontSize: 26 }}>{flashcard.question}</Text>
+                <Text style={{ marginTop: 20, textAlign: 'center', fontSize: 12, color: 'darkslategray' }}>Answer</Text>
+              </View>
+          }
+  
+          <TouchableOpacity onPress={() => this.setState((prevState) => ({showAnswer: !prevState.showAnswer}))}>
             <View style={{ marginVertical: 20, marginHorizontal: 100, backgroundColor: 'indigo', borderRadius: 20, padding: 10 }}>
-              <Text style={{ color: 'white', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}>Answer</Text>
+              <Text style={{ color: 'white', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}>Flip Card</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -99,7 +132,7 @@ class Quiz extends React.Component {
           </TouchableOpacity>
 
           <TouchableOpacity onPress={this.handleIncorrect}>
-            <View style={{ minWidth: '50%', marginVertical: 10, backgroundColor: 'darkred', borderRadius: 5, padding: 10 }}>
+            <View style={{ minWidth: '50%', marginVertical: 10, backgroundColor: 'orangered', borderRadius: 5, padding: 10 }}>
               <Text style={{ color: 'white', textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}>Incorrect</Text>
             </View>
           </TouchableOpacity>

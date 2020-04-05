@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Platform, StatusBar } from 'react-native';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import reducer from './reducers'
-import { handleReceiveDecks } from './actions/shared'
+import { handleReceiveDecks } from './actions/decks'
 import middleware from './middleware'
 import TabNav from './components/Tabs'
 import 'react-native-gesture-handler';
@@ -13,10 +13,6 @@ import Deck from './components/Deck';
 import AddCard from './components/AddCard';
 import Quiz from './components/Quiz';
 import Constants from "expo-constants";
-import {AsyncStorage} from 'react-native';
-import { receiveDecks } from './actions/decks';
-
-
 
 function CustomStatusBar ({backgroundColor, ...props}) {
   return (
@@ -72,10 +68,14 @@ const store = createStore(reducer, middleware);
 class App extends React.Component {
   storageKey = '@mobile-flashcard:state';
 
-  componentWillMount() {
+  componentDidMount() {
+    // console.log('Mouting App component')
+    // AsyncStorage.setItem(this.storageKey, JSON.stringify({data: 'some data'}))
+    //   .then((res) => console.log('Response from setitem: ', res));
     // AsyncStorage.getItem(this.storageKey)
     //   .then((data) => {
-    //     state = JSON.parse(data);
+    //     const state = JSON.parse(data);
+        
     //     console.log('Loaded data from storage: ', state);
     //     if (state && Object.keys(state).length > 0) {
     //       store.dispatch(receiveDecks(state.decks));
@@ -89,8 +89,10 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
+    // console.log('Un-mounting App component')
     // AsyncStorage.setItem(this.storageKey, JSON.stringify(store))
-    //   .then((data) => console.log('Stored data: ', data));
+    //   .then((data) => console.log('Stored data: ', data))
+    //   .catch(error => console.log('Error: ', error));
   }
 
   render() {

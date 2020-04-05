@@ -1,19 +1,20 @@
 import React from 'react'
 import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native'
 import { connect } from 'react-redux'
-import { deleteDeck } from '../actions/decks'
+import { handleDeleteDeck } from '../actions/decks'
 
 class Deck extends React.Component {
 
   handleDelete = () => {
     const { deck } = this.props
-    this.props.dispatch(deleteDeck(deck.id))
+    this.props.dispatch(handleDeleteDeck(deck.id))
     this.props.navigation.goBack();
   }
 
   deleteDeck = () => {
     const { deck } = this.props
     console.log('Deleteing deck: ', deck);
+    this.handleDelete();
     Alert.alert(
       deck.title,
       'Are you sure you want to delete the deck?',
