@@ -19,9 +19,7 @@ class AddDeck extends React.Component {
         this.props.navigation.goBack();
     }
 
-    render() {
-      console.log('AddDeck props: ', this.props);
-      
+    render() {     
       return (
           <View style={{flex: 1, paddingHorizontal: 50}}>
               <View style={{flex: 1, paddingVertical: 10, justifyContent: 'center'}}>

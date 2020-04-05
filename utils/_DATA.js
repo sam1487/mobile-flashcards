@@ -1,52 +1,7 @@
-import AsyncStorage from '@react-native-community/async-storage';
+import { AsyncStorage } from 'react-native';
 
 function generateUID() {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-}
-
-let localDecks = {
-  "8xf0y6ziyjabvozdd253nd": {
-    id: '8xf0y6ziyjabvozdd253nd',
-    title: 'Capital Cities',
-    flashcards: {
-      '8xf0y6ziyjabvozdd253nd-1': {
-        id: '8xf0y6ziyjabvozdd253nd-1',
-        question: 'USA',
-        answer: 'Washington DC'
-      },
-      '8xf0y6ziyjabvozdd253nd-2': {
-        id: '8xf0y6ziyjabvozdd253nd-2',
-        question: 'Bangladesh',
-        answer: 'Dhaka'
-      },
-      '8xf0y6ziyjabvozdd253nd-3': {
-        id: '8xf0y6ziyjabvozdd253nd-3',
-        question: 'France',
-        answer: 'Paris'
-      },
-    }
-  },
-  "2": {
-    id: '2',
-    title: 'Easy Words',
-    flashcards: {
-      '2-1': {
-        id: '2-1',
-        question: 'Apathy',
-        answer: 'Lack of feeling'
-      },
-      '2-2': {
-        id: '2-2',
-        question: 'Antipathy',
-        answer: 'Deep dislike'
-      },
-    }
-  },
-  "3": {
-    id: '3',
-    title: 'Difficult Words',
-    flashcards: {},
-  },
 }
 
 const storageKey = '@mobile-flashcards:data'
@@ -78,15 +33,9 @@ async function getDecksFromStorage() {
 export async function _getDecks() {
   const decks = await getDecksFromStorage();
   if (Object.keys(decks).length === 0) {
-    // console.log('No data found in storage, loading with default data')
-    // return localDecks;
     return {}
   }
   return decks;
-
-  // return new Promise((res, rej) => {
-  //   setTimeout(() => res({ ...decks }), 1000)
-  // })
 }
 
 async function _saveDecks(decks) {
@@ -98,7 +47,6 @@ export async function _addDeck(title) {
   const decks = await getDecksFromStorage();
   decks[formattedDeck.id] = formattedDeck;
   await _saveDecks(decks);
-  console.log('Returning formatted deck: ', formattedDeck)
   return formattedDeck;
 }
 

@@ -53,7 +53,6 @@ class Quiz extends React.Component {
   }
 
   updateNotificationSchedule = () => {
-    console.log('Updating notifications')
     clearLocalNotification().then(setLocalNotification);
   }
 
@@ -62,20 +61,20 @@ class Quiz extends React.Component {
     this.updateNotificationSchedule();
     return (
       <View style={{flex: 1}}>
-        <View style={{ flex: 1, paddingVertical: 20, paddingHorizontal: 10, justifyContent: 'center'}}>
-          <Text style={{ textAlign: 'center', fontSize: 30, marginBottom: 30 }}>Quiz Completed!</Text>
-          <View style={{alignSelf: 'center', borderRadius: 10, backgroundColor: 'darkslateblue', padding: 20, }}>
-            <View style={{flexDirection: 'row', }}>
-              <Text style={{ flex: 1, marginVertical: 10, fontSize: 24, color: 'whitesmoke' }}>Correct: </Text>
-              <Text style={{ marginVertical: 10, marginLeft: 30, fontSize: 24, color: 'whitesmoke', textAlign: 'right', fontWeight: 'bold'}}>{this.state.correct}</Text>
+        <View style={{flex: 1, paddingVertical: 10, paddingHorizontal: 10, justifyContent: 'center'}}>
+          <Text style={{textAlign: 'center', fontSize: 24, marginBottom: 20 }}>Quiz Completed!</Text>
+          <View style={{ borderRadius: 10, backgroundColor: 'darkslateblue', padding: 20, marginHorizontal: 40 }}>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{ flex: 1, marginVertical: 10, fontSize: 20, color: 'whitesmoke' }}>Correct: </Text>
+              <Text style={{ flex: 1, marginVertical: 10, marginLeft: 5, fontSize: 20, color: 'whitesmoke', textAlign: 'right', fontWeight: 'bold'}}>{this.state.correct}</Text>
             </View>
             <View style={{flexDirection: 'row', }}>
-              <Text style={{ flex: 1, marginVertical: 10, fontSize: 24, color: 'whitesmoke' }}>Total: </Text>
-              <Text style={{ marginVertical: 10, marginLeft: 30, fontSize: 24, color: 'whitesmoke', textAlign: 'right', fontWeight: 'bold'}}>{Object.keys(deck.flashcards).length}</Text>
+              <Text style={{ flex: 1, marginVertical: 10, fontSize: 20, color: 'whitesmoke' }}>Total: </Text>
+              <Text style={{ marginVertical: 10, marginLeft: 5, fontSize: 20, color: 'whitesmoke', textAlign: 'right', fontWeight: 'bold'}}>{Object.keys(deck.flashcards).length}</Text>
             </View>
             <View style={{flexDirection: 'row', }}>
-              <Text style={{ flex: 1, marginVertical: 10, fontSize: 24, color: 'whitesmoke' }}>Accuracy:</Text>
-              <Text style={{ marginVertical: 10, marginLeft: 30, fontSize: 24, color: 'whitesmoke', fontWeight: 'bold'}}>{this.computeAccuracy().toFixed(1)}%</Text>
+              <Text style={{ flex: 1, marginVertical: 10, fontSize: 20, color: 'whitesmoke' }}>Accuracy:</Text>
+              <Text style={{ marginVertical: 10, marginLeft: 5, fontSize: 20, color: 'whitesmoke', fontWeight: 'bold'}}>{this.computeAccuracy().toFixed(1)}%</Text>
             </View>
           </View>
           <View style={{marginTop: 20, marginHorizontal: 40}}>
@@ -142,7 +141,6 @@ class Quiz extends React.Component {
   }
 
   render() {
-    console.log('Quiz props: ', this.props);
     const { deck } = this.props.navigation.state.params;
     const flashcardIds = Object.keys(deck.flashcards);
 

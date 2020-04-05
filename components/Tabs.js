@@ -2,20 +2,9 @@ import React from 'react'
 import { View, Text, Platform } from 'react-native'
 import DeckList from '../components/DeckList'
 import AddDeck from '../components/AddDeck'
-import { createBottomTabNavigator, createMaterialTopTabNavigator } from 'react-navigation-tabs';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createAppContainer } from 'react-navigation';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
-
-
-
-// class Tabs extends React.Component {
-//     render() {
-
-//         return <DeckList />;
-//     }
-// }
-
-// // export default Tabs;
 
 const Tabs = {
     Decks: {

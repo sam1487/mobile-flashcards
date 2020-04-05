@@ -5,14 +5,12 @@ import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 class DeckList extends React.Component {
   render() {
     const { decks } = this.props;
-    console.log('DeckList props: ', this.props)
     const deckData = Object.keys(decks).map(id => decks[id]);
-    console.log('Deck data: ', deckData);
 
     if (deckData.length <= 0) {
       return (
         <View style={{flex: 1, justifyContent: 'center', paddingHorizontal: 20}}>
-          <Text style={{textAlign: 'center', fontSize: 20}}>No decks available! Try creating one with <b>Add Deck</b>.</Text>
+          <Text style={{textAlign: 'center', fontSize: 20}}>No decks available! Try creating one with Add Deck.</Text>
         </View>
       );
     }

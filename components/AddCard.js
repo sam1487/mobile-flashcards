@@ -24,7 +24,6 @@ class AddCard extends React.Component {
 
 
     render() {
-        console.log('AddCard props: ', this.props);
         const { deck } = this.props.navigation.state.params;
         
         return (

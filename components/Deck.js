@@ -13,8 +13,6 @@ class Deck extends React.Component {
 
   deleteDeck = () => {
     const { deck } = this.props
-    console.log('Deleteing deck: ', deck);
-    this.handleDelete();
     Alert.alert(
       deck.title,
       'Are you sure you want to delete the deck?',
@@ -29,7 +27,6 @@ class Deck extends React.Component {
 
 
   render() {
-    console.log('Deck props: ', this.props);
     const { deck } = this.props
 
     if (!deck) {
